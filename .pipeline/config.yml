@@ -1,6 +1,6 @@
 general:
   buildTool: 'npm'
-  gitSshKeyCredentialsId: 'credentials-id-in-jenkins'
+  gitSshKeyCredentialsId: 'id_rsa'
 steps:
   mtaBuild:
     buildTarget: 'CF'
