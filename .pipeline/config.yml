@@ -9,5 +9,4 @@ steps:
       org: '66de7174trial'
       space: 'dev'
       credentialsId: 'BTP-JIAROA'
-      dockerImage: 'ppiper/cf-cli:7'
       apiEndpoint: 'https://api.cf.us10.hana.ondemand.com/'
