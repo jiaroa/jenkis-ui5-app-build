@@ -1,0 +1,94 @@
+_schema-version: "3.2"
+ID: t4sadvance-fiorielementsgwdemo
+description: A Fiori application.
+version: 0.0.1
+modules:
+- name: t4sadvance-fiorielementsgwdemo-dest-content
+  type: com.sap.application.content
+  requires:
+  - name: t4sadvance-fiorielementsgwdemo-dest-srv
+    parameters:
+      content-target: true
+  - name: t4sadvance-fiorielementsgwdemo-repo-host
+    parameters:
+      service-key:
+        name: t4sadvance-fiorielementsgwdemo-repo-host-key
+  - name: t4sadvance-fiorielementsgwdemo-uaa
+    parameters:
+      service-key:
+        name: t4sadvance-fiorielementsgwdemo-uaa-key
+  parameters:
+    content:
+      instance:
+        destinations:
+        - Name: t4sadvance-fiorielementsgwdemo_repo_host
+          ServiceInstanceName: t4sadvance-fiorielementsgwdemo-html5-srv
+          ServiceKeyName: t4sadvance-fiorielementsgwdemo-repo-host-key
+          sap.cloud.service: t4sadvance-fiorielementsgwdemo
+        - Authentication: OAuth2UserTokenExchange
+          Name: t4sadvance-fiorielementsgwdemo_uaa
+          ServiceInstanceName: t4sadvance-fiorielementsgwdemo-xsuaa-srv
+          ServiceKeyName: t4sadvance-fiorielementsgwdemo-uaa-key
+          sap.cloud.service: t4sadvance-fiorielementsgwdemo
+        existing_destinations_policy: ignore
+  build-parameters:
+    no-source: true
+- name: t4sadvance-fiorielementsgwdemo-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: t4sadvance-fiorielementsgwdemo-repo-host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - t4sadvancefiorielementsgwdemo.zip
+      name: t4sadvancefiorielementsgwdemo
+      target-path: resources/
+- name: t4sadvancefiorielementsgwdemo
+  type: html5
+  path: .
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+resources:
+- name: t4sadvance-fiorielementsgwdemo-dest-srv
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: true
+      init_data:
+        instance:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          existing_destinations_policy: update
+      version: 1.0.0
+    service: destination
+    service-name: t4sadvance-fiorielementsgwdemo-dest-srv
+    service-plan: lite
+- name: t4sadvance-fiorielementsgwdemo-uaa
+  type: org.cloudfoundry.managed-service
+  parameters:
+    path: ./xs-security.json
+    service: xsuaa
+    service-name: t4sadvance-fiorielementsgwdemo-xsuaa-srv
+    service-plan: application
+- name: t4sadvance-fiorielementsgwdemo-repo-host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: t4sadvance-fiorielementsgwdemo-html5-srv
+    service-plan: app-host
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true
