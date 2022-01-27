@@ -3,7 +3,7 @@ steps:
   mtaBuild:
     buildTarget: 'CF'
   cloudFoundryDeploy:    
-    deployTool: 'mtaDeployPlugin'
+    deployTool: 'cf_native'
     deployType: 'standard'
     cloudFoundry:
       org: '66de7174trial'
