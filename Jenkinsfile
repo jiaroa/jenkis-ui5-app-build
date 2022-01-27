@@ -8,7 +8,6 @@ node() {
         mtaBuild script: this
     }    
 	stage('deploy') {
-		cloudFoundryDeploy script: this,
-			cfHome: 'https://api.cf.us10.hana.ondemand.com/'
+		cloudFoundryDeploy script: this
 	}	
 }

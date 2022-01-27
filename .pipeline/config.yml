@@ -9,4 +9,4 @@ steps:
       org: '66de7174trial'
       space: 'dev'
       credentialsId: 'BTP-JIAROA'
-      cfHome: 'https://api.cf.us10.hana.ondemand.com/'
+      apiEndpoint: 'https://api.cf.us10.hana.ondemand.com/'
